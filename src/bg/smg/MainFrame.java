@@ -15,9 +15,21 @@ public class MainFrame extends javax.swing.JFrame implements ActionListener{
     private javax.swing.JPanel jPanel2;
     private javax.swing.JButton sortBtn;
     private GraphicElement[] images;
-    String sortMethod;
+    private String sortMethod;
+private int delay=1000;
 
-    private void loadData(){
+   MainFrame(){
+     initComponents();
+      loadData();
+     loadImages();
+       }
+    public static void main(String args[]) {
+
+        MainFrame frame = new MainFrame();
+        frame.setVisible(true);
+
+    }
+private void loadData(){
         images=new GraphicElement[5];
         GraphicElement g1 = new GraphicElement("Image1.png", 5);
         GraphicElement g2 = new GraphicElement("Image2.png", 4);
@@ -31,13 +43,7 @@ public class MainFrame extends javax.swing.JFrame implements ActionListener{
         images[3] = g4;
         images[4] = g5;
     }
-   MainFrame(){
-initComponents();
-loadData();
-       loadImages();
-       }
-
- void   loadImages(){
+ private void   loadImages(){
      Path resourceDirectory = Paths.get("src","resources");
      String absolutePath = resourceDirectory.toFile().getAbsolutePath();
      int x ;
@@ -58,12 +64,7 @@ loadData();
 
          x +=imgIcon.getIconWidth();}
    }
-    public static void main(String args[]) {
 
-                MainFrame frame = new MainFrame();
-                frame.setVisible(true);
-
-        }
 
    private void initComponents(){
         jPanel1 = new javax.swing.JPanel();
@@ -140,7 +141,10 @@ loadData();
         sortMethod = MethodsComboBox.getSelectedItem().toString();
         switch (sortMethod) {
             case "BubbleSort":
+
                 BubbleSort(images);
+
+
                 break;
             case "SelectionSort":
                 SelectionSort(images);
@@ -161,11 +165,11 @@ loadData();
     }
 
     public void BubbleSort(GraphicElement[] list) {
-        System.out.println("yes");
+
+       //
         for (int i = 0; i < list.length - 1; i++) {
             for (int j = 0; j < list.length - i - 1; j++) {
-                if (list[j].compareTo(list[j+1])>0) {
-                    // Swap elements[j] and elements[j+1]
+                if (list[j].compareTo(list[j + 1]) > 0) {
                     GraphicElement temp = list[j];
                     list[j] = list[j + 1];
                     list[j + 1] = temp;
@@ -181,7 +185,7 @@ loadData();
     public void SelectionSort(GraphicElement[] list) {
         for (int i = 0; i < list.length - 1; i++) {
 
-            GraphicElement currentMin = list[1];
+            GraphicElement currentMin = list[i];
             int currentMinIndex = i;
             for (int j = i + 1; j < list.length; j++) {
                 if (currentMin.compareTo(list[j]) > 0) {
@@ -189,22 +193,22 @@ loadData();
                     currentMinIndex = j;
                 }
             }
-            if (currentMinIndex != 1) {
+            if (currentMinIndex != i) {
                 list[currentMinIndex] = list[i];
                 list[i] = currentMin;
 
             }
-            jPanel2.removeAll();
+           jPanel2.removeAll();
             loadImages();
             jPanel2.repaint();
         }
     }
 
     public void InsertionSort(GraphicElement[] list) {
-        for (int i = 0; i < list.length; i++) {
+        for (int i = 1; i < list.length; i++) {
             GraphicElement currentElement = list[i];
             int k;
-            for (k = i - 1; k >= 0 && (list[k].compareTo(currentElement) > 0); k++) {
+            for (k = i - 1; k >= 0 && (list[k].compareTo(currentElement) > 0); k--) {
                 list[k + 1] = list[k];
             }
             list[k + 1] = currentElement;
